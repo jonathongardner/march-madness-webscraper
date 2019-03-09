@@ -1,0 +1,2 @@
+class SomeOtherError < RuntimeError
+end

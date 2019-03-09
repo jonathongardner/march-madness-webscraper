@@ -14,9 +14,11 @@ class WebScrapper
     @url = url
   end
 
-  def unique_game_number(id)
-    return 5050509827861135890
+  def unique_game_number(id, save_file: false)
     doc = Net::HTTP.get(uri(id))
+
+    File.open(File.join(Main.root, 'pages', "#{id}.html"), 'w') { |file| file.write(doc) } if save_file
+
     parsed_page = Nokogiri::HTML(doc)
 
     raise IdNotFound if parsed_page.at('title')&.content&.downcase == 'moved temporarily'
@@ -28,12 +30,17 @@ class WebScrapper
     end
 
     champion = parsed_page.at('div.champion > div.slot')
-    winner_ids[champion['data-slotindex'].to_i] = champion['data-teamid'].to_i
+    if champion && champion.key?('data-slotindex') && champion.key?('data-teamid')
+      winner_ids[champion['data-slotindex'].to_i] = champion['data-teamid'].to_i
+    end
+
+    raise SomeOtherError if winner_ids.length != 127
 
     binary_string = ''
     BRACKET_MAPPING.each do |game, mod|
       binary_string.prepend(binary_for(winner_ids[game], mod))
     end
+
     binary_string.to_i(2)
   end
 
