@@ -1,0 +1,2 @@
+class IdNotFound < RuntimeError
+end
