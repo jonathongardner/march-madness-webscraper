@@ -1,7 +1,7 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  host: deeproots.loc
+  host: localhost
   username: march-madness-previous-brackets
   password: 9126675918
   pool: 5

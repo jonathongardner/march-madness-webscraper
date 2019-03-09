@@ -1,8 +1,8 @@
 class Brackets2018
-  START_BRACKET = 1
-  # END_BRACKET =
-  MAX_ERRORS = 10
-  BATCH_SIZE = 5
+  START_BRACKET = 350
+  END_BRACKET = 1000000
+  MAX_ERRORS = 50
+  BATCH_SIZE = 1000
   COLUMNS = [:id, :unique_game_number]
   def initialize
     reset_to_save
@@ -12,7 +12,7 @@ class Brackets2018
   end
 
   def run
-    while @current_errors > MAX_ERRORS
+    while @current_bracket <= END_BRACKET
       begin
         @to_save.push([@current_bracket, @web_scrapper.unique_game_number(@current_bracket)])
       rescue IdNotFound
@@ -20,11 +20,12 @@ class Brackets2018
         @current_errors += 1
       rescue SomeOtherError
         puts "ERROR: Mmmm not sure what happen: #{@current_bracket}"
+        @current_errors += 1
       rescue Exception
         puts "ERROR: SHOOT! I really have no idea what happen: #{@current_bracket}"
         @current_errors += 1
       ensure
-        puts "Done with #{@current_bracket}..." if @current_bracket % 5 == 0
+        puts "Done with #{@current_bracket}..." if @current_bracket % 100 == 0
         save_to_db if @to_save.length >= BATCH_SIZE
         @current_bracket += 1
       end

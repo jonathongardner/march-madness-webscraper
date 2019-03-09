@@ -1,9 +1,11 @@
-require 'httparty'
 require 'nokogiri'
+require 'net/http'
 require 'byebug'
 require 'active_record'
 require 'activerecord-import'
 require_relative 'app/models/march_madness_previous_bracket.rb'
+
+STDOUT.sync = true
 
 module Main
   def self.root
@@ -21,7 +23,7 @@ def db_configuration
 end
 ActiveRecord::Base.establish_connection(db_configuration['development'])
 
-# B2018.delete_all
+#B2018.delete_all
 puts "Initializing bracket..."
 bracket_2018 = Brackets2018.new
 puts "Running bracket..."
