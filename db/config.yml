@@ -1,18 +1,12 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  host: localhost
+  host: deeproots.loc
   username: march-madness-previous-brackets
   password: 9126675918
   pool: 5
   timeout: 5000
 
-test:
-  <<: *default
-  database: march-madness-previous-brackets
 development:
-  <<: *default
-  database: march-madness-previous-brackets
-production:
   <<: *default
   database: march-madness-previous-brackets
