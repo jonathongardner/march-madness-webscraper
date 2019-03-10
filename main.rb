@@ -15,6 +15,19 @@ end
 
 Dir[File.join(Main.root, 'app', '*', '*.rb')].each { |file| require file }
 
+start_bracket = 1
+final_bracket = nil
+ARGV.each_slice(2) do |arg|
+  case arg[0]
+  when '-s'
+    start_bracket = arg[1].to_i
+  when '-f'
+    final_bracket = arg[1].to_i
+  else
+    puts "Arguemnts not used: #{arg}"
+  end
+end
+
 #--------Connect to DB-------
 puts "Setting up db connection..."
 def db_configuration
@@ -23,8 +36,9 @@ def db_configuration
 end
 ActiveRecord::Base.establish_connection(db_configuration['development'])
 
+
 #B2018.delete_all
 puts "Initializing bracket..."
-bracket_2018 = Brackets2018.new
+bracket_2018 = Brackets2018.new(start_bracket: start_bracket, final_bracket: final_bracket)
 puts "Running bracket..."
 bracket_2018.run
