@@ -1,7 +1,7 @@
 class Brackets2018
-  THREAD_SIZES = 5
+  THREAD_SIZES = 10
   COLUMNS = [:id, :unique_game_number]
-  NUMBER_OF_THREADS = 100
+  NUMBER_OF_THREADS = 50
 
   def initialize(start_bracket: 1, final_bracket: nil)
     reset_to_save
@@ -27,7 +27,7 @@ class Brackets2018
   end
 
   def run
-    kill_file = File.join(Main.root, 'tmp', 'stop')
+    kill_file = Main.kill_file
     while @current_bracket <= @final_bracket && !File.file?(kill_file)
       threads = []
       end_bracket = @current_bracket +  [THREAD_SIZES * NUMBER_OF_THREADS - 1, @final_bracket - @current_bracket].min
@@ -46,7 +46,7 @@ class Brackets2018
     end
     if File.file?(kill_file)
       puts "Stopping from kill file..."
-      File.delete(kill_file)
+      File.open(kill_file, 'w') {|f| f.write("#{@current_bracket}")}
     end
     puts "Finished getting all brackets #{@current_bracket - 1}"
   end

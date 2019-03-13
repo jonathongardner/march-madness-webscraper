@@ -11,6 +11,10 @@ module Main
   def self.root
     @root ||= File.join(__dir__)
   end
+
+  def self.kill_file
+    @kill_file ||= File.join(Main.root, 'tmp', 'stop')
+  end
 end
 
 Dir[File.join(Main.root, 'app', '*', '*.rb')].each { |file| require file }
@@ -26,6 +30,10 @@ ARGV.each_slice(2) do |arg|
   else
     puts "Arguemnts not used: #{arg}"
   end
+end
+if File.file?(Main.kill_file)
+  start_bracket = File.read(Main.kill_file, 'r').to_i
+  File.delete(Main.kill_file)
 end
 
 #--------Connect to DB-------
