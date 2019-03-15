@@ -32,7 +32,7 @@ ARGV.each_slice(2) do |arg|
   end
 end
 if File.file?(Main.kill_file)
-  start_bracket = File.read(Main.kill_file, 'r').to_i
+  start_bracket = File.read(Main.kill_file).to_i
   File.delete(Main.kill_file)
 end
 
