@@ -2,7 +2,7 @@ default: &default
   adapter: postgresql
   encoding: unicode
   host: localhost
-  username: march-madness-previous-brackets
+  username: budget_rails #march-madness-previous-brackets
   password: 9126675918
   pool: 5
   timeout: 5000
